@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Pago</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #45F1C3, #6F1540);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            width: 320px;
+            max-width: 90%;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 1em;
+        }
+        .btn-pay {
+            background-color: #45F1C3;
+            color: #6F1540;
+            padding: 12px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+        .btn-pay:hover {
+            background-color: #6F1540;
+            color: #45F1C3;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulario de Pago</h1>
+        <form id="paymentForm">
+            <label for="cardNumber">Número de tarjeta:</label>
+            <input type="text" id="cardNumber" required>
+
+            <label for="expirationDate">Fecha de expiración:</label>
+            <div style="display: flex; gap: 10px;">
+                <select id="expirationMonth" required>
+                    <option value="">Mes</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                <select id="expirationYear" required>
+                    <option value="">Año</option>
+                    <script>
+                        for (let i = new Date().getFullYear(); i <= new Date().getFullYear() + 10; i++) {
+                            document.write(`<option value="${i}">${i}</option>`);
+                        }
+                    </script>
+                </select>
+            </div>
+
+            <label for="cvv">CVC:</label>
+            <input type="text" id="cvv" required>
+
+            <label for="amount">Monto:</label>
+            <input type="number" id="amount" required>
+
+            <button class="btn-pay" type="submit">Pagar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expirationMonth = document.getElementById('expirationMonth').value;
+            const expirationYear = document.getElementById('expirationYear').value;
+            const cvv = document.getElementById('cvv').value;
+            const amount = document.getElementById('amount').value;
+
+            try {
+                const response = await fetch('/api/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token_id: cardNumber,
+                        expiration_month: expirationMonth,
+                        expiration_year: expirationYear,
+                        amount: amount,
+                    }),
+                });
+
+                // Intenta interpretar la respuesta como JSON
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Pago realizado con éxito');
+                    window.location.href = 'index.html?success=true';
+                } else {
+                    alert('Error en el pago: ' + (data.error || 'Error desconocido'));
+                }
+            } catch (error) {
+                alert('Error al procesar el pago: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

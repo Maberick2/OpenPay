@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con PayPal</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(90deg, #45F1C3, #6F1540);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+      }
+      .container {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 40px 50px;
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 20px #45F1C3;
+        text-align: center;
+        width: 350px;
+        max-width: 90%;
+        position: relative;
+      }
+      h1, h2, h3, p {
+        color: #c8275a;
+        text-shadow: 0 0 10px #c8275a;
+      }
+      .price {
+        font-size: 20px;
+        color: #fff;
+        text-shadow: 0 0 10px #45F1C3;
+      }
+      .btn-pay {
+        background-color: #6F1540;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        margin-top: 20px;
+        width: 100%;
+        box-shadow: 0 0 10px #6F1540, 0 0 20px #45F1C3;
+      }
+      .btn-pay:hover {
+        background-color: #45F1C3;
+        box-shadow: 0 0 20px #45F1C3, 0 0 30px #6F1540;
+      }
+      img {
+        width: 300px;
+        height: auto;
+        margin-bottom: 30px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 0 15px #45F1C3, 0 0 30px #6F1540;
+      }
+      .notification {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: none;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <img src="https://http2.mlstatic.com/D_NQ_NP_759009-MLA79539482580_102024-O.webp" alt="PayPal Logo">
+      <h1>VideoJuego Mario Kart 8 Deluxe Nintendo Switch Físico</h1>
+      <h3>Descripcion</h3>
+      <p>¡Acelera a través de las pistas del Reino Champiñón, bajo el agua, en el cielo, de cabeza y sin gravedad,
+        y llega a la meta para obtener la victoria! Prepara motores en el modo multijugador local, en los torneos en
+        línea del juego, en el modo batalla que ha sido mejorado ¡y más!</p>
+      <h2>Pagar con PayPal</h2>
+      <p class="price">$369 MXN</p>
+      <form action="/payment_form.html" method="GET">
+        <button class="btn-pay" type="submit">Pagar ahora</button>
+      </form>
+      <div class="notification" id="notification">
+        ¡Compra realizada con éxito!
+      </div>
+    </div>
+
+    <script>
+      // Función para mostrar la notificación de éxito
+      function showNotification() {
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 5000); // Ocultar la notificación después de 5 segundos
+      }
+
+      // Comprobar si la URL tiene el parámetro de éxito
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === 'true') {
+        showNotification();
+      }
+    </script>
+</body>
+</html>
+
